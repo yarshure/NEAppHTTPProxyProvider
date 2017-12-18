@@ -16,7 +16,8 @@ class WebViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        wv.loadRequest(NSURLRequest(URL: NSURL(string: "https://www.google.com")!))
+        let url:URL = URL.init(string: "https://www.google.com")!
+        wv.loadRequest(URLRequest.init(url: url))
     }
 
     override func didReceiveMemoryWarning() {

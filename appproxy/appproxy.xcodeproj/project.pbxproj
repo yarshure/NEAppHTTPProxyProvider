@@ -306,7 +306,7 @@
 				TargetAttributes = {
 					888783691C655E82008A9E83 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = M6GT4ZS5X7;
+						DevelopmentTeam = 745WQDK4L7;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -315,6 +315,7 @@
 					};
 					88D0E6021C63D5E300C50B49 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 745WQDK4L7;
 					};
 					88D0E6161C63D5E300C50B49 = {
 						CreatedOnToolsVersion = 7.2;
@@ -500,11 +501,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_ENTITLEMENTS = httpproxy/httpproxy.entitlements;
+				DEVELOPMENT_TEAM = 745WQDK4L7;
 				INFOPLIST_FILE = httpproxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxy.httpproxy;
+				PRODUCT_BUNDLE_IDENTIFIER = co.yarshure.appproxy.httpproxy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -513,11 +516,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_ENTITLEMENTS = httpproxy/httpproxy.entitlements;
+				DEVELOPMENT_TEAM = 745WQDK4L7;
 				INFOPLIST_FILE = httpproxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxy.httpproxy;
+				PRODUCT_BUNDLE_IDENTIFIER = co.yarshure.appproxy.httpproxy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -608,11 +613,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 745WQDK4L7;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = appproxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxy;
+				PRODUCT_BUNDLE_IDENTIFIER = co.yarshure.appproxy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -620,11 +627,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 745WQDK4L7;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = appproxy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxy;
+				PRODUCT_BUNDLE_IDENTIFIER = co.yarshure.appproxy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -636,6 +645,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/appproxy.app/appproxy";
 			};
 			name = Debug;
@@ -648,6 +658,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/appproxy.app/appproxy";
 			};
 			name = Release;
@@ -659,6 +670,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = appproxy;
 				USES_XCTRUNNER = YES;
 			};
@@ -671,6 +683,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.pinidea.appproxyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = appproxy;
 				USES_XCTRUNNER = YES;
 			};
@@ -686,6 +699,7 @@
 				888783771C655E82008A9E83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		88D0E5FE1C63D5E300C50B49 /* Build configuration list for PBXProject "appproxy" */ = {
 			isa = XCConfigurationList;
