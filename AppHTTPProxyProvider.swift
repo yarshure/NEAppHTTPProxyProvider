@@ -14,13 +14,35 @@ struct HTTPProxySet {
     var port: UInt16
 }
 
-var proxy = HTTPProxySet(host: "127.0.0.1", port: 3028)
+var proxy = HTTPProxySet(host: "192.168.2.90", port: 8000)
 
 /// A AppHTTPProxyProvider sub-class that implements the client side of the http proxy tunneling protocol.
 class AppHTTPProxyProvider: NEAppProxyProvider {
     
+    let q = DispatchQueue.init(label: "com.yarshure.socket")
+    let qq = DispatchQueue.init(label: "com.yarshure.delegate")
     /// Begin the process of establishing the tunnel.
+    var clients:[ClientAppHTTPProxyConnection] = []
+    func prepare(){
+        
+    }
+    override init() {
+        super.init()
+        NSLog("AppHTTPProxyProvider init")
+    }
     override func startProxy(options: [String : Any]? = nil, completionHandler: @escaping (Error?) -> Void) {
+        NSLog("AppHTTPProxyProvider startProxy")
+        let newSettings = NETunnelNetworkSettings(tunnelRemoteAddress: "192.168.2.1")
+        newSettings.dnsSettings = NEDNSSettings(servers: ["192.168.2.1","180.168.255.118"])
+        var excludedRoutes = [NEIPv4Route]()
+        excludedRoutes.append(NEIPv4Route.init(destinationAddress: "192.168.2.0", subnetMask: "255.255.255.0"))
+        //newSettings.ipv4Settings?.excludedRoutes = excludedRoutes
+        self.setTunnelNetworkSettings(newSettings) { error in
+            if let e = error{
+                NSLog("setTunnelNetworkSettings error \(e.localizedDescription)")
+            }
+            completionHandler(error)
+        }
         
     }
     
@@ -29,17 +51,23 @@ class AppHTTPProxyProvider: NEAppProxyProvider {
    
     
     override func stopProxy(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
+         NSLog("AppHTTPProxyProvider stopProxy")
         completionHandler()
     }
     /// Handle a new flow of network data created by an application.
     override func handleNewFlow(_ flow: (NEAppProxyFlow?)) -> Bool {
         
         if let TCPFlow = flow as? NEAppProxyTCPFlow {
+             NSLog("AppHTTPProxyProvider NEAppProxyTCPFlow \(TCPFlow.metaData.sourceAppSigningIdentifier)")
             let conn = ClientAppHTTPProxyConnection(flow: TCPFlow)
-            conn.open()
+            clients.append(conn)
+            conn.open(q: q, qq: qq)
         }
         
         return false
+    }
+    override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
+        completionHandler!(messageData)
     }
 }
 
@@ -62,19 +90,29 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
     init(flow: NEAppProxyTCPFlow) {
         TCPFlow = flow
     }
+    deinit {
+         NSLog("ClientAppHTTPProxyConnection deinit")
+    }
     
-    func open() {
-        sock = GCDAsyncSocket(delegate: self, delegateQueue: DispatchQueue.main)
+    func open(q:DispatchQueue,qq:DispatchQueue) {
+        sock = GCDAsyncSocket.init(delegate: self, delegateQueue: q, socketQueue: qq)
         do {
             try sock.connect(toHost: proxy.host, onPort: proxy.port, withTimeout: 30.0)
-        } catch {
+        } catch let e  {
+            NSLog("GCDAsyncSocket error \(e.localizedDescription)")
             TCPFlow.closeReadWithError(NSError(domain: NEAppProxyErrorDomain, code: NEAppProxyFlowError.notConnected.rawValue, userInfo: nil))
             return
         }
     }
-    
+    public func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?){
+        if let e = err {
+             NSLog("GCDAsyncSocket error \(e.localizedDescription)")
+        }
+       
+    }
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host:String, port p:UInt16) {
         
+        NSLog("AppHTTPProxyProvider didConnectToHost")
         print("Connected to \(host) on port \(p).")
         
         let remoteHost = (TCPFlow.remoteEndpoint as! NWHostEndpoint).hostname
@@ -89,6 +127,7 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
             tag: 1)
         
     }
+    
     
     func didReadFlow(data: Data?, error: NSError?) ->Void{
         // 7. did read from flow
@@ -123,6 +162,7 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
                     if data.count > range.upperBound {
                         // 5. write to flow if there is data already
                         let left = data.subdata(in: range.lowerBound..<data.count)
+                        NSLog("#### proxy write data \(left)" )
                         TCPFlow.write(left, withCompletionHandler: { error in })
                     }
                     
