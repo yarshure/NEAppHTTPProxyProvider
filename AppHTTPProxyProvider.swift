@@ -25,6 +25,7 @@ class AppHTTPProxyProvider: NEAppProxyProvider {
         completionHandler(nil)
     }
     
+    
     /// Begin the process of stopping the tunnel.
     override func stopProxyWithReason(reason: NEProviderStopReason, completionHandler: () -> Void) {
         
@@ -32,7 +33,7 @@ class AppHTTPProxyProvider: NEAppProxyProvider {
     }
     
     /// Handle a new flow of network data created by an application.
-    override func handleNewFlow(flow: (NEAppProxyFlow?)) -> Bool {
+    override func handleNewFlow(_ flow: (NEAppProxyFlow?)) -> Bool {
         
         if let TCPFlow = flow as? NEAppProxyTCPFlow {
             let conn = ClientAppHTTPProxyConnection(flow: TCPFlow)
@@ -49,7 +50,7 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
     // MARK: Constants
     let bufferSize: UInt = 4096
     let timeout    = 30.0
-    let pattern    = "\n\n".dataUsingEncoding(NSUTF8StringEncoding)
+    let pattern    = "\n\n".data(using: String.Encoding.utf8)
     
     // MARK: Properties
     
