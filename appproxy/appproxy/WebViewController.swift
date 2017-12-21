@@ -8,10 +8,70 @@
 
 import UIKit
 import NetworkExtension
+extension NEVPNStatus{
+    func descript() ->String{
+        switch self{
+        case .disconnected:
+            
+            return  "Disconnect"
+            
+            
+        case .invalid:
+            
+            return "Please Try Again"
+            
+        case .connected:
+            
+            return "Connected"
+            
+            
+        case .connecting:
+            
+            return "Connecting"
+            
+        case .disconnecting:
+            
+            return "Disconnecting"
+            
+        case .reasserting:
+            return   "Reasserting"
+            
+            
+            
+        }
+    }
+}
 class WebViewController: UIViewController ,UIWebViewDelegate{
     var proxyManager:NEAppProxyProviderManager?
     @IBOutlet weak var wv: UIWebView!
+    @IBOutlet weak var lable:UILabel!
+    func ob(_ connection:NEVPNConnection){
+        self.lable.text =  connection.status.descript()
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.NEVPNStatusDidChange, object:connection , queue: OperationQueue.main, using: { (t) in
+            self.lable.text =  connection.status.descript()
+            
+        })
+    }
     private func startLoading() {
+        func xpc(){
+            guard let targetManager = self.proxyManager else {
+                return
+            }
+            if let session = targetManager.connection as? NETunnelProviderSession,
+                let message = "Hello Provider".data(using: String.Encoding.utf8)
+                , targetManager.connection.status != .invalid{
+                do {
+                    try session.sendProviderMessage(message, responseHandler: { (t) in
+                        if let t = t ,let s = String.init(data: t, encoding: .utf8){
+                            
+                            print(s)
+                        }
+                    })
+                }catch let e {
+                    print("provider reply:\(e.localizedDescription)")
+                }
+            }
+        }
         // guard case .loading = self.state else { fatalError() }
         NEAppProxyProviderManager.loadAllFromPreferences { (managers, error) in
             assert(Thread.isMainThread)
@@ -20,7 +80,7 @@ class WebViewController: UIViewController ,UIWebViewDelegate{
                 print(error.localizedDescription)
             } else {
                 guard let manager = managers?.first else {
-                    fatalError()
+                    print("no MDM profile")
                     return
                 }
                 
@@ -31,7 +91,7 @@ class WebViewController: UIViewController ,UIWebViewDelegate{
                 if let rs = manager.copyAppRules(){
                     print(rs)
                 }
-                
+                 self.ob(manager.connection)
                 self.initProviderManager()
             }
         }

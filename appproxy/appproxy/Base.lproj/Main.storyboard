@@ -33,6 +33,13 @@
                                     <action selector="query:" destination="BYZ-38-t0r" eventType="touchUpInside" id="c78-Q5-UNj"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwj-Og-vAj">
+                                <rect key="frame" x="16" y="227" width="318" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -43,12 +50,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lable" destination="Pwj-Og-vAj" id="bVp-Z9-7dV"/>
                         <outlet property="wv" destination="JU6-6c-faB" id="PpB-Gm-GIy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="241" y="338"/>
+            <point key="canvasLocation" x="240.80000000000001" y="337.78110944527737"/>
         </scene>
     </scenes>
 </document>

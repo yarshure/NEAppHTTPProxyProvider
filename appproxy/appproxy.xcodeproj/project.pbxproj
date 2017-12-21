@@ -10,6 +10,7 @@
 		6959533D1FE75CA400915DBA /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6959533C1FE75CA400915DBA /* NetworkExtension.framework */; };
 		695955991FE77C7500915DBA /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695955941FE77C6400915DBA /* CocoaAsyncSocket.framework */; };
 		6959559A1FE77C7500915DBA /* CocoaAsyncSocket.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 695955941FE77C6400915DBA /* CocoaAsyncSocket.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		695E9CF31FEB581C00319F9B /* tcp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695E9CF21FEB581C00319F9B /* tcp.swift */; };
 		69D8DDF11FE79B1500471BAA /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D8DDF01FE79B1500471BAA /* File.swift */; };
 		888783741C655E82008A9E83 /* httpproxy.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8887836A1C655E82008A9E83 /* httpproxy.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		888783791C655F6F008A9E83 /* AppHTTPProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D0E6341C63D77600C50B49 /* AppHTTPProxyProvider.swift */; };
@@ -87,6 +88,7 @@
 		6959533C1FE75CA400915DBA /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		6959533E1FE75CA400915DBA /* appproxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = appproxy.entitlements; sourceTree = "<group>"; };
 		6959558D1FE77C6400915DBA /* CocoaAsyncSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CocoaAsyncSocket.xcodeproj; path = ../../CocoaAsyncSocket/CocoaAsyncSocket.xcodeproj; sourceTree = "<group>"; };
+		695E9CF21FEB581C00319F9B /* tcp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tcp.swift; sourceTree = "<group>"; };
 		69D8DDF01FE79B1500471BAA /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		8887836A1C655E82008A9E83 /* httpproxy.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = httpproxy.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		888783701C655E82008A9E83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				888783781C655F28008A9E83 /* httpproxy.entitlements */,
 				88D0E6341C63D77600C50B49 /* AppHTTPProxyProvider.swift */,
 				69D8DDF01FE79B1500471BAA /* File.swift */,
+				695E9CF21FEB581C00319F9B /* tcp.swift */,
 				888783701C655E82008A9E83 /* Info.plist */,
 			);
 			path = httpproxy;
@@ -360,6 +363,7 @@
 			files = (
 				888783791C655F6F008A9E83 /* AppHTTPProxyProvider.swift in Sources */,
 				69D8DDF11FE79B1500471BAA /* File.swift in Sources */,
+				695E9CF31FEB581C00319F9B /* tcp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
