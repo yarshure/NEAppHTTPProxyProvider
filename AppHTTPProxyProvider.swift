@@ -14,7 +14,7 @@ struct HTTPProxySet {
     var port: UInt16
 }
 
-var proxy = HTTPProxySet(host: "192.168.1.64", port: 8000)
+var proxy = HTTPProxySet(host: "192.168.2.90", port: 8000)
 
 /// A AppHTTPProxyProvider sub-class that implements the client side of the http proxy tunneling protocol.
 class AppHTTPProxyProvider: NEAppProxyProvider {
@@ -87,7 +87,7 @@ class AppHTTPProxyProvider: NEAppProxyProvider {
     }
     override init() {
         super.init()
-        showScan()
+        //showScan()
         NSLog("AppHTTPProxyProvider init")
     }
     override func startProxy(options: [String : Any]? = nil, completionHandler: @escaping (Error?) -> Void) {
@@ -118,7 +118,7 @@ class AppHTTPProxyProvider: NEAppProxyProvider {
     /// Handle a new flow of network data created by an application.
     override func handleNewFlow(_ flow: (NEAppProxyFlow?)) -> Bool {
         
-        showScan()
+        //showScan()
         if let TCPFlow = flow as? NEAppProxyTCPFlow {
              NSLog("AppHTTPProxyProvider NEAppProxyTCPFlow \(TCPFlow.metaData.sourceAppSigningIdentifier)")
             let conn = ClientAppHTTPProxyConnection(flow: TCPFlow)
@@ -157,7 +157,8 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
     }
     
     func open(q:DispatchQueue,qq:DispatchQueue) {
-        sock = GCDAsyncSocket.init(delegate: self, delegateQueue: q, socketQueue: qq)
+        //sock = GCDAsyncSocket.init(delegate: self, delegateQueue: q, socketQueue: qq)
+        sock = GCDAsyncSocket.init(delegate: self, delegateQueue: DispatchQueue.main)
         do {
 //            let remoteHost = (TCPFlow.remoteEndpoint as! NWHostEndpoint).hostname
 //            let remotePort = (TCPFlow.remoteEndpoint as! NWHostEndpoint).port
@@ -184,19 +185,17 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
         let remoteHost = (TCPFlow.remoteEndpoint as! NWHostEndpoint).hostname
         let remotePort = (TCPFlow.remoteEndpoint as! NWHostEndpoint).port
         
-        let l:NWHostEndpoint = NWHostEndpoint.init(hostname: sock.localHost, port: String(sock.localPort))
-        TCPFlow.open(withLocalEndpoint: l) { (e) in
-            if let e = e {
-                NSLog("withLocalEndpoint \(e.localizedDescription)")
-            }
-        }
+//        let l:NWHostEndpoint = NWHostEndpoint.init(hostname: sock.localHost, port: String(sock.localPort))
         // 1. send CONNECT
         // CONNECT www.google.com:80 HTTP/1.1
-        sock.write(
-            "CONNECT \(remoteHost):\(remotePort) HTTP/1.1\n\n"
-                .data(using: String.Encoding.utf8),
-            withTimeout: timeout,
-            tag: 1)
+        let header = "CONNECT \(remoteHost):\(remotePort) HTTP/1.1\n\n"
+        if let  data = header.data(using: String.Encoding.utf8){
+            NSLog("send \(header)")
+            sock.write(data,
+                       withTimeout: timeout,
+                       tag: 1)
+        }
+        
         
     }
     
@@ -204,7 +203,7 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
     func didReadFlow(data: Data?, error: Error?) ->Void{
         // 7. did read from flow
         // 8. write flow data to proxy
-        sock.write(data! as Data, withTimeout: timeout, tag: 0)
+        sock.write(data!, withTimeout: timeout, tag: 0)
         
         // 9. keep reading from flow
         TCPFlow.readData(completionHandler: self.didReadFlow )
@@ -212,6 +211,7 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
     }
     
     func socket(_ sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
+        NSLog("didWriteDataWithTag")
         if tag == 1 {
             // 2. CONNECT header sent
             // 3. begin to read from proxy server
@@ -219,7 +219,9 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
         }
     }
     
-    func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
+    @objc func socket(_ sock: GCDAsyncSocket!, didRead data: Data!, withTag tag: Int) {
+        let host = TCPFlow.remoteEndpoint as! NWHostEndpoint
+        NSLog("didRead \(data as NSData) \(host.hostname)")
         if tag == 1 {
              //4. read 1st proxy server response of CONNECT
             //let range = data.range(of:pattern!,
@@ -259,7 +261,13 @@ class ClientAppHTTPProxyConnection : NSObject, GCDAsyncSocketDelegate {
         }
         
         // 10. writing any data followed to flow
-        TCPFlow.write(data as Data, withCompletionHandler: { error in })
+        TCPFlow.write(data, withCompletionHandler: { error in
+            if let e = error {
+                NSLog("write \(e)")
+            }
+            
+            
+        })
         
         // 11. keep reading from proxy server
         sock.readData(toLength: bufferSize, withTimeout: timeout, tag: 0)
